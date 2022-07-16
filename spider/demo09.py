@@ -3,11 +3,16 @@ import urllib.request
 import urllib.parse
 import os
 import time
+
 """
 ajax[POST]请求
 爬取bilibili up主视频bv号
 """
-mid = '302417610'
+mid = {
+    'my': '212314714',
+    '尚硅谷': '302417610',
+    '银子': '1285446'
+}
 
 bilibili_url = 'https://www.bilibili.com/video/'
 
@@ -34,7 +39,7 @@ def create_request(page_number, page_size=10):
         'jsonp': 'jsonp'
     }
     '''
-    dict_params['mid'] = mid if mid else '1285446'
+    dict_params['mid'] = mid['银子']
     dict_params['pn'] = page_number
     dict_params['ps'] = page_size
 
@@ -45,7 +50,7 @@ def create_request(page_number, page_size=10):
     url = base_url + data
     print(url)
 
-    return urllib.request.Request(url=url, headers=headers)
+    return urllib.request.Request(url=url, headers=headers, method='GET')
 
 
 def get_content(request):
@@ -63,10 +68,10 @@ def get_data(content):
     print(data_list[0])
     global up_name
     up_name = data_list[0].get('author')
-    bv_list = [{'title': item['title'],\
-                'BV_ID': item['bvid'],\
-                'url': bilibili_url + item['bvid'],\
-                'create_time':time.strftime('%Y:%m:%d %H:%M:%S',time.localtime(item['created'])) \
+    bv_list = [{'title': item['title'], \
+                'BV_ID': item['bvid'], \
+                'url': bilibili_url + item['bvid'], \
+                'create_time': time.strftime('%Y:%m:%d %H:%M:%S', time.localtime(item['created'])) \
                 } \
                for item in data_list]
 
@@ -75,7 +80,7 @@ def get_data(content):
 
 def download_file(content, page):
     file_name = 'BVID' + '_{:0>3d}'.format(page) + '.json'
-    full_path= base_path +up_name+'/'
+    full_path = base_path + up_name + '/'
     if not os.path.exists(full_path):
         os.makedirs(full_path)
     with open(full_path + file_name, 'w', encoding='utf-8')as file:
