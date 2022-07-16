@@ -43,7 +43,7 @@ def get_content(request):
 def download_file(content, page):
     file_name = 'KFC_beijing_location' + '_{:0>3d}'.format(page) + '.json'
     if not os.path.exists(base_path):
-        os.mkdir(base_path)
+        os.makedirs(base_path)
     with open(base_path + file_name, 'w', encoding='utf-8')as file:
         file.write(json.dumps(json.loads(content), indent=2, ensure_ascii=False))
         file.close()

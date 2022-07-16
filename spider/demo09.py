@@ -5,7 +5,7 @@ import os
 import time
 """
 ajax[POST]请求
-爬取北京肯德基地址列表
+爬取bilibili up主视频bv号
 """
 mid = '302417610'
 
@@ -77,7 +77,7 @@ def download_file(content, page):
     file_name = 'BVID' + '_{:0>3d}'.format(page) + '.json'
     full_path= base_path +up_name+'/'
     if not os.path.exists(full_path):
-        os.mkdir(full_path)
+        os.makedirs(full_path)
     with open(full_path + file_name, 'w', encoding='utf-8')as file:
         file.write(content)
         file.close()
