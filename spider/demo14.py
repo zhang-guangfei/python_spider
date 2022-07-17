@@ -19,7 +19,7 @@ headers = {
     'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.114 Safari/537.36 Edg/103.0.1264.62'
 }
 
-download_path = download_path = '../resource/pixiv/illusts/'
+download_path = '../resource/pixiv/illusts/'
 
 
 def get_request(page_number):
@@ -54,7 +54,7 @@ def parse_content(content, page):
 
     list = json.dumps(data, indent=2, ensure_ascii=False)
 
-    with open('{:0>3d}'.format(page) + '.json', 'w', encoding='utf-8') as file:
+    with open(download_path+'{:0>3d}'.format(page) + '.json', 'w', encoding='utf-8') as file:
         file.write(list)
         file.flush()
     return data
