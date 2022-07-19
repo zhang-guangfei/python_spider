@@ -1,8 +1,9 @@
 import urllib.request
 import urllib.parse
 
-# url参数unicode编码
-
+"""
+url参数unicode编码
+"""
 base_url = 'https://www.baidu.com/s?'
 
 data = {
