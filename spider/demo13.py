@@ -4,6 +4,8 @@ import urllib.request
 import json
 import os
 import urllib.error
+from datetime import date
+from datetime import timedelta
 
 """
 爬取p站图片
@@ -32,8 +34,10 @@ def get_request(page_number):
     params_dict = dict(urllib.parse.parse_qsl(params))
 
     params_dict['page'] = page_number
-    # params_dict['date'] = time.strftime('%Y%m%d')
 
+    yesterday = date.today() - timedelta(days=2)
+    params_dict['date'] = yesterday.strftime('%Y%m%d')
+    print(params_dict)
     params = urllib.parse.urlencode(params_dict)
 
     new_url = base_url + '?' + params
@@ -79,11 +83,11 @@ def create_url(info):
     return img_url
 
 
-def download_data(img_url, title,page_path,index):
+def download_data(img_url, title, page_path, index):
     if not os.path.exists(download_path):
         os.makedirs(download_path)
-
-    file_name = '{:0>3d}'.format(index)+title + '.jpg'
+    title = title.replace('/', '_').replace('\\', '_')
+    file_name = '{:0>3d}'.format(index) + title + '.jpg'
 
     full_name = download_path + page_path + file_name
 
@@ -91,13 +95,15 @@ def download_data(img_url, title,page_path,index):
     opener.addheaders = [('user-agent', headers['user-agent'])]
     urllib.request.install_opener(opener)
     try:
-        urllib.request.urlretrieve(url=img_url, filename=full_name)
         print(img_url, title)
+        urllib.request.urlretrieve(url=img_url, filename=full_name)
     except urllib.error.HTTPError as e:
         if e.code == '404':
             print(img_url, "没有找到资源...")
         else:
             print(img_url, 'HTTP Error %s: %s' % (e.code, e.msg))
+    except BaseException as e:
+        print(e)
 
 
 if __name__ == '__main__':
@@ -111,6 +117,6 @@ if __name__ == '__main__':
 
         data = parse_content(content, page_path)
 
-        # for item, index in data:
-        #     img_url = create_url(item)
-        #     download_data(img_url, item['title'], page_path, index)
+        for index, item in enumerate(data):
+            img_url = create_url(item)
+            download_data(img_url, item['title'], page_path, index)
