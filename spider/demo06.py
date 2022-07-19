@@ -1,10 +1,10 @@
 import urllib.request
 import urllib.parse
 import json
-
+"""
 # Post请求
 # 百度翻译
-
+"""
 url = 'https://fanyi.baidu.com/sug'
 data = {
     'kw': 'spider'

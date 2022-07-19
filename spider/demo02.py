@@ -1,5 +1,6 @@
 import urllib.request
-
+"""
+根据图片URL,下载图片到本地"""
 
 # 下载
 url_page='http://www.baidu.com'
